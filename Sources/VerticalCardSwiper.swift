@@ -136,9 +136,9 @@ public class VerticalCardSwiper: UIView {
     /// The flowlayout used in the collectionView.
     fileprivate lazy var flowLayout: VerticalCardSwiperFlowLayout = {
         let flowLayout = VerticalCardSwiperFlowLayout()
-        flowLayout.firstItemTransform = firstItemTransform
+        //flowLayout.firstItemTransform = firstItemTransform
         flowLayout.minimumLineSpacing = cardSpacing
-        flowLayout.isPagingEnabled = true
+        //flowLayout.isPagingEnabled = true
         return flowLayout
     }()
 
@@ -417,9 +417,7 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
          so we're using setContentOffset for the time being.
          See: https://github.com/JoniVR/VerticalCardSwiper/issues/23
          */
-        guard
-            let cellHeight = flowLayout.cellHeight,
-            index >= 0,
+        guard index >= 0,
             swipedCard == nil,
             index < verticalCardSwiperView.numberOfItems(inSection: 0)
             else { return false }
@@ -512,7 +510,7 @@ extension VerticalCardSwiper: UICollectionViewDelegateFlowLayout {
         let itemSize = calculateItemSize(for: indexPath.row)
 
         // set cellHeight in the custom flowlayout, we use this for paging calculations.
-        flowLayout.cellHeight = itemSize.height
+        //flowLayout.cellHeight = itemSize.height
 
         if swipeAbleArea == nil {
             // Calculate and set the swipeAbleArea. We use this to determine wheter the cell can be swiped to the sides or not.
