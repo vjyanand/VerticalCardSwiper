@@ -75,25 +75,25 @@ public class VerticalCardSwiper: UIView {
     /// The transform animation that is shown on the top card when scrolling through the cards. Default is 0.05.
     @IBInspectable public var firstItemTransform: CGFloat = 0.05 {
         willSet {
-            flowLayout.firstItemTransform = newValue
+           // flowLayout.firstItemTransform = newValue
         }
     }
     /// Allows you to enable/disable the stacking effect. Default is `true`.
     @IBInspectable public var isStackingEnabled: Bool = true {
         willSet {
-            flowLayout.isStackingEnabled = newValue
+           // flowLayout.isStackingEnabled = newValue
         }
     }
     /// Allows you to set the view to Stack at the Top or at the Bottom. Default is `true`.
     @IBInspectable public var isStackOnBottom: Bool = true {
         willSet {
-            flowLayout.isStackOnBottom = newValue
+           // flowLayout.isStackOnBottom = newValue
         }
     }
     /// Sets how many cards of the stack are visible in the background. Default is 1.
     @IBInspectable public var stackedCardsCount: Int = 1 {
         willSet {
-            flowLayout.stackedCardsCount = newValue
+            //flowLayout.stackedCardsCount = newValue
         }
     }
     /**
