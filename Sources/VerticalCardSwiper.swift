@@ -261,9 +261,10 @@ extension VerticalCardSwiper: UICollectionViewDelegateFlowLayout {
 
     fileprivate func setupVerticalCardSwiperView() {
         verticalCardSwiperView = VerticalCardSwiperView(frame: self.frame, collectionViewLayout: flowLayout)
-        verticalCardSwiperView.backgroundColor = UIColor.clear 
+        verticalCardSwiperView.backgroundColor = UIColor.clear
         verticalCardSwiperView.contentInsetAdjustmentBehavior = .never
         verticalCardSwiperView.showsVerticalScrollIndicator = false
+        verticalCardSwiperView.isPagingEnabled = true
         verticalCardSwiperView.dataSource = self
         self.addSubview(verticalCardSwiperView)
     }
