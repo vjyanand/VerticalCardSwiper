@@ -35,9 +35,6 @@ public class VerticalCardSwiper: UIView {
     /// The collectionView where all the magic happens.
     public var verticalCardSwiperView: VerticalCardSwiperView!
 
-    
-    
-    
     /**
      Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
      This includes cards that are stacked (behind the focussed card).
@@ -61,20 +58,7 @@ public class VerticalCardSwiper: UIView {
 
     public weak var delegate: VerticalCardSwiperDelegate?
     public weak var datasource: VerticalCardSwiperDatasource?
-
-    /// We use this tapGestureRecognizer for the tap recognizer.
-    fileprivate var tapGestureRecognizer: UITapGestureRecognizer!
-    /// We use this tapGestureRecognizer for the tap recognizer.
-    fileprivate var longPressGestureRecognizer: UILongPressGestureRecognizer!
-    /// We use this horizontalPangestureRecognizer for the vertical panning.
-    fileprivate var horizontalPangestureRecognizer: UIPanGestureRecognizer!
-    /// Stores a `CGRect` with the area that is swipeable to the user.
-    fileprivate var swipeAbleArea: CGRect?
-    /// The `CardCell` that the user can (and is) moving.
-    fileprivate var swipedCard: CardCell!
-    /// Indicates if removal of a card is allowed. This is used to prevent rapid removal causing the datasource to get out of sync.
-    fileprivate var isCardRemovalAllowed = true
-
+    
     /// The flowlayout used in the collectionView.
     fileprivate lazy var flowLayout: VerticalCardSwiperFlowLayout = {
         let flowLayout = VerticalCardSwiperFlowLayout()
@@ -193,10 +177,8 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
          See: https://github.com/JoniVR/VerticalCardSwiper/issues/23
          */
         guard index >= 0,
-            swipedCard == nil,
             index < verticalCardSwiperView.numberOfItems(inSection: 0)
             else { return false }
-        self.isCardRemovalAllowed = false
         let y = CGFloat(index) * (self.bounds.size.height + flowLayout.minimumLineSpacing)
         let point = CGPoint(x: verticalCardSwiperView.contentOffset.x, y: y)
         verticalCardSwiperView.setContentOffset(point, animated: animated)
@@ -252,28 +234,26 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.delegate?.didScroll?(verticalCardSwiperView: self.verticalCardSwiperView)
-        isCardRemovalAllowed = false
+        
     }
 
     public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        isCardRemovalAllowed = true
+     
     }
 
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             delegate?.didEndScroll?(verticalCardSwiperView: verticalCardSwiperView)
-            isCardRemovalAllowed = true
         }
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.didEndScroll?(verticalCardSwiperView: verticalCardSwiperView)
-        isCardRemovalAllowed = true
+        
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         delegate?.didEndScroll?(verticalCardSwiperView: verticalCardSwiperView)
-        isCardRemovalAllowed = true
     }
 }
 
