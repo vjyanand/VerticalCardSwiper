@@ -258,7 +258,12 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension VerticalCardSwiper: UICollectionViewDelegateFlowLayout {
-
+    
+    /// Takes an index as Int and converts it to an IndexPath with row: index and section: 0.
+    internal func convertIndexToIndexPath(for index: Int) -> IndexPath {
+        return IndexPath(row: index, section: 0)
+    }
+    
     fileprivate func setupVerticalCardSwiperView() {
         verticalCardSwiperView = VerticalCardSwiperView(frame: self.frame, collectionViewLayout: flowLayout)
         verticalCardSwiperView.backgroundColor = UIColor.clear
