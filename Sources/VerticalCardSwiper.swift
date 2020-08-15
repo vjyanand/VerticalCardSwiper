@@ -422,7 +422,7 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
             index < verticalCardSwiperView.numberOfItems(inSection: 0)
             else { return false }
         self.isCardRemovalAllowed = false
-        let y = CGFloat(index) * (cellHeight + flowLayout.minimumLineSpacing) - topInset
+        let y = CGFloat(index) * (self.bounds.size.height + flowLayout.minimumLineSpacing) - topInset
         let point = CGPoint(x: verticalCardSwiperView.contentOffset.x, y: y)
         verticalCardSwiperView.setContentOffset(point, animated: animated)
         return true
@@ -543,8 +543,9 @@ extension VerticalCardSwiper: UICollectionViewDelegateFlowLayout {
         verticalCardSwiperView = VerticalCardSwiperView(frame: self.frame, collectionViewLayout: flowLayout)
         verticalCardSwiperView.decelerationRate = UIScrollView.DecelerationRate.fast
         verticalCardSwiperView.backgroundColor = UIColor.clear 
-        verticalCardSwiperView.contentInsetAdjustmentBehavior = .never
-        
+        if #available(iOS 11.0, *) {
+            verticalCardSwiperView.contentInsetAdjustmentBehavior = .never
+        }
         verticalCardSwiperView.showsVerticalScrollIndicator = false
         verticalCardSwiperView.dataSource = self
         self.addSubview(verticalCardSwiperView)
