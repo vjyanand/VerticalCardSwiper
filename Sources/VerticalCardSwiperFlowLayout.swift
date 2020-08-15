@@ -24,7 +24,6 @@ import UIKit
 
 /// Custom `UICollectionViewFlowLayout` that provides the flowlayout information like paging and `CardCell` movements.
 internal class VerticalCardSwiperFlowLayout: UICollectionViewFlowLayout {
-
     
     public var widthOffset: CGFloat = 35
     public var heightOffset: CGFloat = 35

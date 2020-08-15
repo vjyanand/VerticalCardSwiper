@@ -37,30 +37,7 @@ public class VerticalCardSwiper: UIView {
 
     
     
-    /// The transform animation that is shown on the top card when scrolling through the cards. Default is 0.05.
-    @IBInspectable public var firstItemTransform: CGFloat = 0.05 {
-        willSet {
-           // flowLayout.firstItemTransform = newValue
-        }
-    }
-    /// Allows you to enable/disable the stacking effect. Default is `true`.
-    @IBInspectable public var isStackingEnabled: Bool = true {
-        willSet {
-           // flowLayout.isStackingEnabled = newValue
-        }
-    }
-    /// Allows you to set the view to Stack at the Top or at the Bottom. Default is `true`.
-    @IBInspectable public var isStackOnBottom: Bool = true {
-        willSet {
-           // flowLayout.isStackOnBottom = newValue
-        }
-    }
-    /// Sets how many cards of the stack are visible in the background. Default is 1.
-    @IBInspectable public var stackedCardsCount: Int = 1 {
-        willSet {
-            //flowLayout.stackedCardsCount = newValue
-        }
-    }
+    
     /**
      Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
      This includes cards that are stacked (behind the focussed card).
@@ -187,46 +164,6 @@ public class VerticalCardSwiper: UIView {
     }
 }
 
-extension VerticalCardSwiper: CardDelegate {
-
-    internal func willSwipeAway(cell: CardCell, swipeDirection: SwipeDirection) {
-        self.verticalCardSwiperView.isUserInteractionEnabled = false
-
-        if let index = self.verticalCardSwiperView.indexPath(for: cell)?.row {
-            self.delegate?.willSwipeCardAway?(card: cell, index: index, swipeDirection: swipeDirection)
-        }
-    }
-
-    internal func didSwipeAway(cell: CardCell, swipeDirection direction: SwipeDirection) {
-        if let indexPathToRemove = self.verticalCardSwiperView.indexPath(for: cell) {
-            swipedCard = nil
-            self.verticalCardSwiperView.performBatchUpdates({
-                self.verticalCardSwiperView.deleteItems(at: [indexPathToRemove])
-            }, completion: { [weak self] _ in
-                self?.verticalCardSwiperView.collectionViewLayout.invalidateLayout()
-                self?.verticalCardSwiperView.isUserInteractionEnabled = true
-                self?.delegate?.didSwipeCardAway?(card: cell, index: indexPathToRemove.row, swipeDirection: direction)
-                self?.isCardRemovalAllowed = true
-            })
-        }
-    }
-
-    func didCancelSwipe(cell: CardCell) {
-        if let index = self.verticalCardSwiperView.indexPath(for: cell)?.row {
-            delegate?.didCancelSwipe?(card: cell, index: index)
-            self.isCardRemovalAllowed = true
-            swipedCard = nil
-        }
-    }
-
-    internal func didDragCard(cell: CardCell, swipeDirection: SwipeDirection) {
-        if let index = self.verticalCardSwiperView.indexPath(for: cell)?.row {
-            self.delegate?.didDragCard?(card: cell, index: index, swipeDirection: swipeDirection)
-        }
-    }
-}
-
-
 extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSource {
 
     /**
@@ -238,26 +175,7 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
         verticalCardSwiperView.reloadData()
     }
 
-    /**
-     Allows you to swipe a card away from code.
-     The  `willSwipeCardAway` and `didSwipeCardAway` delegate functions will also be called when you use this function.
-     You can use `willSwipeCardAway` to modify your DataSource.
-     - parameter index: The index of the card you want to swipe away.
-     - parameter direction: The `SwipeDirection` you want to swipe to.
-     - parameter duration: The duration of the animation in seconds. Default is 0.3 seconds.
-     - Returns: True if swiping away succeeds. False if swiping away failed.
-     */
-    public func swipeCardAwayProgrammatically(at index: Int, to direction: SwipeDirection, withDuration duration: TimeInterval = 0.3) -> Bool {
-        guard swipedCard == nil, isCardRemovalAllowed else { return false }
-
-        if let card = self.verticalCardSwiperView.cellForItem(at: self.convertIndexToIndexPath(for: index)) as? CardCell {
-            isCardRemovalAllowed = false
-            card.animateOffScreenProgramatically(to: direction, withDuration: duration)
-            return true
-        }
-        return false
-    }
-
+    
     /**
      Scrolls the collection view contents until the specified item is visible.
      If you want to scroll to a specific card from the start, make sure to call this function in `viewDidLayoutSubviews`
@@ -327,7 +245,6 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let card = datasource?.cardForItemAt(verticalCardSwiperView: verticalCardSwiperView, cardForItemAt: indexPath.row) {
-            card.delegate = self
             return card
         }
         return CardCell()
